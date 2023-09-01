@@ -1,0 +1,17 @@
+{
+  "name": "evoplay-articles-managment-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "start": "concurrently \"yarn workspace server dev\" \"yarn workspace client start\" "
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.1"
+  }
+}
