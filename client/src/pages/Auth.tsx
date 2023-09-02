@@ -1,37 +1,20 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
+import { CheckBox, CustomField } from "../components/Form/Field";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 
 const defaultTheme = createTheme();
 
 const Auth = () => {
-  const navigate = useNavigate();
-  const navigateToMainRoute = () => {
-    navigate(ROUTES.MAIN);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("login"),
-      password: data.get("password"),
-    });
-  };
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -44,50 +27,13 @@ const Auth = () => {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="login"
-              label="Login"
-              name="login"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              onClick={navigateToMainRoute}
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container>
+          <Box sx={{ mt: 1 }}>
+            <AuthForm />
+
+            <Grid container sx={{ mt: 3, justifyContent: "center" }}>
               <Grid item>
                 <Link href={ROUTES.REGISTER} variant="body2">
                   {"Don't have an account? Sign Up"}
@@ -98,6 +44,58 @@ const Auth = () => {
         </Box>
       </Container>
     </ThemeProvider>
+  );
+};
+
+const AuthForm = () => {
+  const navigate = useNavigate();
+  const navigateToMainRoute = () => {
+    navigate(ROUTES.MAIN);
+  };
+  const initValues = { login: "", password: "", rememberMe: false };
+  return (
+    <>
+      <Formik
+        initialValues={initValues}
+        onSubmit={(values) => {
+          console.log(values);
+          navigateToMainRoute();
+        }}
+      >
+        {({ initialValues, errors, touched, handleChange }) => (
+          <Form
+            style={{ display: "flex", flexDirection: "column", width: 450 }}
+          >
+            <Field
+              id="login"
+              name="login"
+              label="Login*"
+              type="text"
+              onChange={handleChange}
+              component={CustomField}
+            />
+            <Field
+              id="password"
+              name="password"
+              label="Password*"
+              type="password"
+              onChange={handleChange}
+              component={CustomField}
+            />
+            <Field
+              id="rememberMe"
+              name="rememberMe"
+              label="Remember Me"
+              type="checkbox"
+              component={CheckBox}
+            />
+            <Button sx={{ mt: 3 }} variant="contained" type="submit">
+              Submit
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 };
 export default Auth;
