@@ -3,6 +3,7 @@ import Feed from "../pages/Feed";
 import Auth from "../pages/Auth";
 import Register from "../pages/Register";
 import { ROUTES } from "../constants/routes";
+import PostEditor from "../pages/PostEditor";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: ROUTES.REGISTER,
     element: <Register />,
+  },
+  {
+    path: ROUTES.EDIT,
+    element: <PostEditor />,
   },
 ]);
 
