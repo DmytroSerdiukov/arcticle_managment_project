@@ -6,7 +6,7 @@ import Header from "../components/Header";
 
 const featuredPosts = [
   {
-    title: "Featured post",
+    title: "How does useState() works?",
     date: "Nov 12",
     description:
       "This is a wider card with supporting text below as a natural lead-in to additional content.",

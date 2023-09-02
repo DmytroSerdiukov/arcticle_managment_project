@@ -32,8 +32,11 @@ export default function Header(props: HeaderProps) {
           {title}
         </Typography>
         <TextField name="search" placeholder="Search" size="small" />
-        <Button variant="outlined" size="small" onClick={navigateToAuthPage}>
+        <Button variant="contained" size="small" onClick={navigateToAuthPage}>
           Sign in
+        </Button>
+        <Button variant="outlined" size="small" onClick={navigateToAuthPage}>
+          Log out
         </Button>
       </Toolbar>
     </React.Fragment>
