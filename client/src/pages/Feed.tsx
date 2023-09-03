@@ -1,10 +1,10 @@
-import * as React from "react";
+import React, { FC, ReactNode } from "react";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import FeaturedPost from "../components/Post";
 import Header from "../components/Header";
 
-const featuredPosts = [
+const posts = [
   {
     title: "How does useState() works?",
     date: "Nov 12",
@@ -23,7 +23,7 @@ const featuredPosts = [
   },
 ];
 
-export default function Feed() {
+const Feed: FC = (): JSX.Element => {
   return (
     <Container maxWidth="lg">
       <Header title="RSS Feed" />
@@ -37,11 +37,12 @@ export default function Feed() {
           }}
           spacing={4}
         >
-          {featuredPosts.map((post) => (
+          {posts.map((post) => (
             <FeaturedPost key={post.title} post={post} />
           ))}
         </Grid>
       </main>
     </Container>
   );
-}
+};
+export default Feed;

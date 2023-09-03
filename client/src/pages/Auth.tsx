@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { FC, ReactNode } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Link from "@mui/material/Link";
@@ -11,10 +11,11 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
 import { CheckBox, CustomField } from "../components/Form/Field";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import { schema } from "../validation";
 
 const defaultTheme = createTheme();
 
-const Auth = () => {
+const Auth: FC = (): JSX.Element => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -47,22 +48,37 @@ const Auth = () => {
   );
 };
 
-const AuthForm = () => {
+type InitVals = {
+  login: string;
+  password: string;
+  rememberMe: boolean;
+};
+
+const AuthForm: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const navigateToMainRoute = () => {
     navigate(ROUTES.MAIN);
   };
-  const initValues = { login: "", password: "", rememberMe: false };
+  const initValues: InitVals = { login: "", password: "", rememberMe: false };
   return (
     <>
       <Formik
         initialValues={initValues}
+        validate={(values) => {
+          if (!schema) return;
+          try {
+            schema.parse(values);
+          } catch (error: any) {
+            console.log(error);
+            return error.formErrors.fieldErrors;
+          }
+        }}
         onSubmit={(values) => {
           console.log(values);
           navigateToMainRoute();
         }}
       >
-        {({ initialValues, errors, touched, handleChange }) => (
+        {({ errors, touched, handleChange }) => (
           <Form
             style={{ display: "flex", flexDirection: "column", width: 450 }}
           >
@@ -73,6 +89,8 @@ const AuthForm = () => {
               type="text"
               onChange={handleChange}
               component={CustomField}
+              error={errors.login}
+              touched={touched}
             />
             <Field
               id="password"
@@ -81,6 +99,8 @@ const AuthForm = () => {
               type="password"
               onChange={handleChange}
               component={CustomField}
+              error={errors.password}
+              touched={touched}
             />
             <Field
               id="rememberMe"

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { FC, ReactNode } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,10 +13,11 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { CheckBox, CustomField } from "../components/Form/Field";
+import { schema } from "../validation";
 
 const defaultTheme = createTheme();
 
-const Register = () => {
+const Register: FC = (): JSX.Element => {
   const navigate = useNavigate();
 
   const navigateToMain = () => {
@@ -59,7 +60,7 @@ const Register = () => {
 };
 export default Register;
 
-const RegisterForm = () => {
+const RegisterForm: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const navigateToMainRoute = () => {
     navigate(ROUTES.MAIN);
@@ -73,8 +74,17 @@ const RegisterForm = () => {
           console.log(values);
           navigateToMainRoute();
         }}
+        validate={(values) => {
+          if (!schema) return;
+          try {
+            schema.parse(values);
+          } catch (error: any) {
+            console.log(error);
+            return error.formErrors.fieldErrors;
+          }
+        }}
       >
-        {({ initialValues, errors, touched, handleChange }) => (
+        {({ errors, touched, handleChange }) => (
           <Form
             style={{ display: "flex", flexDirection: "column", width: 450 }}
           >
@@ -85,6 +95,8 @@ const RegisterForm = () => {
               type="text"
               onChange={handleChange}
               component={CustomField}
+              error={errors.login}
+              touched={touched}
             />
             <Field
               id="password"
@@ -93,6 +105,8 @@ const RegisterForm = () => {
               type="password"
               onChange={handleChange}
               component={CustomField}
+              error={errors.password}
+              touched={touched}
             />
             <Field
               id="rememberMe"
