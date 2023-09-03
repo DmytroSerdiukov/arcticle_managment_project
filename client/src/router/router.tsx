@@ -1,9 +1,9 @@
-import { createBrowserRouter } from "react-router-dom";
+import { RouteObject, createBrowserRouter } from "react-router-dom";
 import Feed from "../pages/Feed";
 import Auth from "../pages/Auth";
 import Register from "../pages/Register";
 import { ROUTES } from "../constants/routes";
-import PostEditor from "../pages/PostEditor";
+import PostDetails from "../pages/PostDetails";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
   },
   {
     path: ROUTES.EDIT,
-    element: <PostEditor />,
+    element: <PostDetails />,
   },
 ]);
 

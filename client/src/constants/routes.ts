@@ -1,6 +1,6 @@
-export const ROUTES = {
-  MAIN: "/",
-  AUTH: "/auth",
-  REGISTER: "/register",
-  EDIT: "/posts/:id",
-};
+export enum ROUTES {
+  MAIN = "/",
+  AUTH = "/auth",
+  REGISTER = "/register",
+  EDIT = "/posts/:id",
+}
