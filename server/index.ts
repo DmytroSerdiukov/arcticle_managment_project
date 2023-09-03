@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import posts from "./routes/posts";
 import auth from "./routes/auth";
 import connectDB from "./config/db";
+import RSSParser from "./controllers/RSSParser";
 dotenv.config();
 
 const app: Express = express();
@@ -15,4 +16,5 @@ app.use("/", auth);
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
-connectDB();
+
+const parser = new RSSParser();
