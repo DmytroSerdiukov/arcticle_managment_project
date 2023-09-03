@@ -13,7 +13,7 @@ export const PostsAPI = {
       throw e;
     }
   },
-  getPostDetails: async (id: any) => {
+  getPostDetails: async (id: string) => {
     try {
       const res = await POSTS.get(`${ENDPOINTS.posts}/${id}`);
       return res.data;
@@ -35,7 +35,7 @@ export const PostsAPI = {
       throw e;
     }
   },
-  deletePost: async (postId: any) => {
+  deletePost: async (postId: string) => {
     try {
       await POSTS.delete(`${ENDPOINTS.posts}/${postId}`);
     } catch (e) {
