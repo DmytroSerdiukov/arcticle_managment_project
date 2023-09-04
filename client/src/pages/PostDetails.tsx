@@ -11,6 +11,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { PostSchema } from "../validation";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import WithAuth from "../hoc/WithAuthorized";
 
 const PostDetails: FC = (): JSX.Element => {
   const [isAuthorized, setStatus] = useState(false);
@@ -68,7 +69,9 @@ const PostDetails: FC = (): JSX.Element => {
   );
 };
 
-export default PostDetails;
+const ProtectedPostDetails = WithAuth(PostDetails);
+
+export default ProtectedPostDetails;
 
 type InitVals = {
   title: string;

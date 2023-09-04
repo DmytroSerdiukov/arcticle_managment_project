@@ -47,5 +47,4 @@ const Feed: FC = (): JSX.Element => {
   );
 };
 
-const ProtectedFeed = WithAuth(Feed);
-export default ProtectedFeed;
+export default Feed;

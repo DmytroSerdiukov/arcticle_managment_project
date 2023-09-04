@@ -15,7 +15,7 @@ import { Formik, Field, Form, ErrorMessage, FormikValues } from "formik";
 import { CheckBox, CustomField } from "../components/Form/Field";
 import { schema } from "../validation";
 import { registerUserThunk } from "../store/features/Auth";
-import { useAppDispatch } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 const defaultTheme = createTheme();
 
@@ -65,6 +65,8 @@ export default Register;
 const RegisterForm: FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isAuth = useAppSelector((state) => state.auth.isAuthorized);
+
   const onSubmitHandler = (values: FormikValues) => {
     if (!schema) return;
     try {
@@ -84,6 +86,9 @@ const RegisterForm: FC = (): JSX.Element => {
         initialValues={initValues}
         onSubmit={(values) => {
           dispatch(registerUserThunk(values));
+          if (isAuth) {
+            navigateToMainRoute();
+          }
         }}
         validate={onSubmitHandler}
       >

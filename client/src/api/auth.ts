@@ -5,7 +5,6 @@ export const AuthAPI = {
   authUser: async (data: any) => {
     try {
       const res = await POSTS.post(ROUTES.AUTH, { data });
-      if (!res.data.response) return;
       return res.data.response;
     } catch (e) {
       throw e;
