@@ -1,12 +1,18 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import { Auth, Posts } from "../constants/routes";
-const router = Router();
+import { Auth as AuthController } from "../controllers/Auth";
 
-router.post(Auth.auth, () => {
-  console.log("auth");
+const router = Router();
+const auth = new AuthController();
+
+router.post(Auth.auth, (req: Request, res: Response) => {
+  const data = req.body;
+  auth.authUser(data);
 });
-router.post(Auth.register, () => {
-  console.log("register");
+
+router.post(Auth.register, (req: Request, res: Response) => {
+  const data = req.body;
+  auth.registerUser(data);
 });
 
 export default router;

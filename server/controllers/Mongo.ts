@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 class Mongo {
   db: any;
   constructor() {
-    this.db = this.getInstance();
+    // this.db = this.getInstance();
   }
 
   getInstance = () => {

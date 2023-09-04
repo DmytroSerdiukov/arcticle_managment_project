@@ -7,7 +7,6 @@ class RSSParser extends Posts {
   constructor() {
     super();
     this.parser = this.getParserInstance();
-    this.parse();
   }
 
   getParserInstance = () => {
@@ -18,7 +17,9 @@ class RSSParser extends Posts {
 
   parse = async () => {
     try {
-      const feed = await this.parser.parseURL(process.env.PARSER_ROUTE);
+      const feed = await this.parser.parseURL(
+        "https://netflixtechblog.com/feed"
+      );
       feed.items.forEach((el: any) => {
         this.createPost(el);
       });

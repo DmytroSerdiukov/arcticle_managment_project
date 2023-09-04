@@ -1,6 +1,7 @@
+import { UsersModel } from "../models";
 import Mongo from "./Mongo";
 
-class Auth extends Mongo {
+export class Auth extends Mongo {
   constructor() {
     super();
   }
@@ -12,13 +13,20 @@ class Auth extends Mongo {
 
   findUser = () => {};
 
-  authUser = () => {};
+  authUser = async (data: any) => {
+    const { login, password } = data;
+    const user = await UsersModel.find({ login: login });
+    console.log(user);
+    // if(user.password === password)
+  };
 
   giveJWT = () => {};
 
-  registerUser = () => {};
+  registerUser = async (data: any) => {
+    // const { login, password } = data;
+    // const newUser = new UsersModel(data);
+    // await newUser.save();
+  };
 
   hashPassword = () => {};
 }
-
-export default Auth;

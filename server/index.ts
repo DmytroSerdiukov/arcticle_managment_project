@@ -4,17 +4,23 @@ import posts from "./routes/posts";
 import auth from "./routes/auth";
 import connectDB from "./config/db";
 import RSSParser from "./controllers/RSSParser";
+import cors from "cors";
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/", posts);
+app.use(cors());
+// app.use("/", posts);
 app.use("/", auth);
 
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-});
+const start = () => {
+  app.listen(port, () => {
+    console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+    // const parser = new RSSParser();
+    // parser.parse();
+  });
+};
 
-const parser = new RSSParser();
+start();

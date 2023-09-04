@@ -25,8 +25,6 @@ export const counterSlice = createSlice({
 
 export const {} = counterSlice.actions;
 
-export const selectCount = (state: RootState) => state.posts.posts;
-
 export default counterSlice.reducer;
 
 const getPosts = createAsyncThunk("posts/get", async () => {

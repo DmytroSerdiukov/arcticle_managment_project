@@ -11,9 +11,11 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, FormikValues } from "formik";
 import { CheckBox, CustomField } from "../components/Form/Field";
 import { schema } from "../validation";
+import { registerUserThunk } from "../store/features/Auth";
+import { useAppDispatch } from "../store/hooks";
 
 const defaultTheme = createTheme();
 
@@ -61,7 +63,17 @@ const Register: FC = (): JSX.Element => {
 export default Register;
 
 const RegisterForm: FC = (): JSX.Element => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const onSubmitHandler = (values: FormikValues) => {
+    if (!schema) return;
+    try {
+      schema.parse(values);
+    } catch (error: any) {
+      console.log(error);
+      return error.formErrors.fieldErrors;
+    }
+  };
   const navigateToMainRoute = () => {
     navigate(ROUTES.MAIN);
   };
@@ -71,18 +83,9 @@ const RegisterForm: FC = (): JSX.Element => {
       <Formik
         initialValues={initValues}
         onSubmit={(values) => {
-          console.log(values);
-          navigateToMainRoute();
+          dispatch(registerUserThunk(values));
         }}
-        validate={(values) => {
-          if (!schema) return;
-          try {
-            schema.parse(values);
-          } catch (error: any) {
-            console.log(error);
-            return error.formErrors.fieldErrors;
-          }
-        }}
+        validate={onSubmitHandler}
       >
         {({ errors, touched, handleChange }) => (
           <Form
