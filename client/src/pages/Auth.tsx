@@ -12,6 +12,8 @@ import { ROUTES } from "../constants/routes";
 import { CheckBox, CustomField } from "../components/Form/Field";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { schema } from "../validation";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { authUserThunk } from "../store/features/Auth";
 
 const defaultTheme = createTheme();
 
@@ -55,6 +57,8 @@ type InitVals = {
 };
 
 const AuthForm: FC = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const isAuth = useAppSelector((state) => state.auth.isAuthorized);
   const navigate = useNavigate();
   const navigateToMainRoute = () => {
     navigate(ROUTES.MAIN);
@@ -74,8 +78,10 @@ const AuthForm: FC = (): JSX.Element => {
           }
         }}
         onSubmit={(values) => {
-          console.log(values);
+          dispatch(authUserThunk(values));
           navigateToMainRoute();
+
+          // console.log(values);
         }}
       >
         {({ errors, touched, handleChange }) => (

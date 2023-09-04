@@ -5,6 +5,7 @@ import auth from "./routes/auth";
 import connectDB from "./config/db";
 import RSSParser from "./controllers/RSSParser";
 import cors from "cors";
+import Mongo from "./controllers/Mongo";
 dotenv.config();
 
 const app: Express = express();
@@ -18,6 +19,8 @@ app.use("/", auth);
 const start = () => {
   app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+    const db = new Mongo();
+    db.createDBCon();
     // const parser = new RSSParser();
     // parser.parse();
   });

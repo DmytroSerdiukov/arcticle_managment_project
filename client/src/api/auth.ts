@@ -5,7 +5,8 @@ export const AuthAPI = {
   authUser: async (data: any) => {
     try {
       const res = await POSTS.post(ROUTES.AUTH, { data });
-      return res.data;
+      if (!res.data.response) return;
+      return res.data.response;
     } catch (e) {
       throw e;
     }
@@ -13,7 +14,8 @@ export const AuthAPI = {
   registerUser: async (data: any) => {
     try {
       const res = await POSTS.post(ROUTES.REGISTER, { data });
-      return res.data;
+      console.log(res.data);
+      return res.data.response;
     } catch (e) {
       throw e;
     }

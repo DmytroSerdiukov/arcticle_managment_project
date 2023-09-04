@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import FeaturedPost from "../components/Post";
 import Header from "../components/Header";
+import WithAuth from "../hoc/WithAuthorized";
 
 const posts = [
   {
@@ -45,4 +46,6 @@ const Feed: FC = (): JSX.Element => {
     </Container>
   );
 };
-export default Feed;
+
+const ProtectedFeed = WithAuth(Feed);
+export default ProtectedFeed;

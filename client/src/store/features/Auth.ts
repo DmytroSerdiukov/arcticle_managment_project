@@ -2,10 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import { AuthAPI } from "../../api/auth";
+import LocalStorage from "../../LocalStorage";
 
 interface AuthState {
   isAuthorized: boolean;
-  user: string;
+  user: any;
   error: any;
 }
 
@@ -20,12 +21,21 @@ export const authReducer = createSlice({
   initialState,
   reducers: {
     setUserData: (state, action: PayloadAction) => {
-      return state;
+      state.isAuthorized = true;
+      const username = action.payload;
+      state.user = username;
+      console.log("reducer state", { ...state });
+    },
+    logoutUser: (state, action: PayloadAction) => {
+      state.isAuthorized = false;
+      state.user = "";
+      LocalStorage.removeToken();
+      console.log("reducer state", { ...state });
     },
   },
 });
 
-export const { setUserData } = authReducer.actions;
+export const { setUserData, logoutUser } = authReducer.actions;
 
 export default authReducer.reducer;
 
@@ -34,7 +44,9 @@ export const authUserThunk = createAsyncThunk(
   async (data: any, thunkAPI) => {
     try {
       const res = await AuthAPI.authUser(data);
-      thunkAPI.dispatch(setUserData(res));
+      console.log(res);
+      LocalStorage.setToken(res.jwt);
+      thunkAPI.dispatch(setUserData(res.username));
     } catch (err) {}
   },
 );
@@ -44,7 +56,9 @@ export const registerUserThunk = createAsyncThunk(
   async (data: any, thunkAPI) => {
     try {
       const res = await AuthAPI.registerUser(data);
-      thunkAPI.dispatch(setUserData(res));
+      console.log(res);
+      LocalStorage.setToken(res.jwt);
+      thunkAPI.dispatch(setUserData(res.username));
     } catch (err) {}
   },
 );

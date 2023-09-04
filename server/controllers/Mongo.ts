@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 class Mongo {
   db: any;
   constructor() {
-    // this.db = this.getInstance();
+    this.db = this.getInstance();
   }
 
   getInstance = () => {
@@ -15,7 +15,9 @@ class Mongo {
   };
 
   createDBCon = async () => {
-    await mongoose.connect(process.env.MONGO_URI!);
+    await mongoose.connect(
+      "mongodb+srv://dmytroserdiukov:serdiukov@cluster0.2hr5gq3.mongodb.net/"
+    );
     console.log("MongoDb Connected");
   };
 }
