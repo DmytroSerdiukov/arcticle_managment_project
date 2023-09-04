@@ -1,5 +1,5 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
-import Feed from "../pages/Feed";
+import ProtectedFeed from "../pages/Feed";
 import Auth from "../pages/Auth";
 import Register from "../pages/Register";
 import { ROUTES } from "../constants/routes";
@@ -8,7 +8,7 @@ import PostDetails from "../pages/PostDetails";
 const router = createBrowserRouter([
   {
     path: ROUTES.MAIN,
-    element: <Feed />,
+    element: <ProtectedFeed />,
   },
   {
     path: ROUTES.AUTH,
@@ -21,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: ROUTES.EDIT,
     element: <PostDetails />,
+  },
+  {
+    path: "*",
+    element: <div>No such page</div>,
   },
 ]);
 
