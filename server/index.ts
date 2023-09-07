@@ -11,9 +11,10 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
+
 app.use(cors());
-// app.use("/", posts);
+app.use("/", posts);
 app.use("/", auth);
 
 const start = () => {
@@ -21,8 +22,8 @@ const start = () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
     const db = new Mongo();
     db.createDBCon();
-    // const parser = new RSSParser();
-    // parser.parse();
+    const parser = new RSSParser();
+    parser.parse();
   });
 };
 

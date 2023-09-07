@@ -1,6 +1,7 @@
 import Mongo from "./Mongo";
 import { PostsModel } from "../models";
-class Posts extends Mongo {
+
+class PostsManager extends Mongo {
   constructor() {
     super();
   }
@@ -12,22 +13,49 @@ class Posts extends Mongo {
     return posts;
   };
 
-  getPost = () => {};
+  getPost = async (id: any) => {
+    const post = await PostsModel.findOne({ _id: id });
+    return post;
+  };
 
-  createPost = async (post: any) => {
+  createFetchedPost = async (post: any) => {
     const newPost = new PostsModel({
       title: post.title,
-      content: post.content,
       categories: post.categories,
+      content: post["content:encodedSnippet"],
       creator: post.creator,
       pubDate: post.pubDate,
     });
     await newPost.save();
   };
 
-  deletePost = () => {};
+  createPost = async (post: any) => {
+    const newPost = new PostsModel({
+      title: post.title,
+      content: post.content,
+      creator: post.creator,
+      pubDate: post.pubDate,
+    });
+    await newPost.save();
+  };
 
-  updatePost = () => {};
+  deletePost = async (postId: string) => {
+    await PostsModel.deleteOne({ _id: postId });
+  };
+
+  updatePost = async (id: any, data: any) => {
+    console.log("UPDATE", data);
+    const POST = await PostsModel.updateOne(
+      { _id: id },
+      {
+        title: data.title,
+        content: data.content,
+        pubDate: data.pubDate,
+        creator: data.creator,
+      }
+    );
+    const p = await PostsModel.find({ _id: id });
+  };
 }
 
-export default Posts;
+export default PostsManager;

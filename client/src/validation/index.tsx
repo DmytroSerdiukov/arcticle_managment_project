@@ -10,3 +10,7 @@ export const PostSchema = z.object({
   title: z.string().nonempty(),
   description: z.string().nonempty(),
 });
+export const NewPostSchema = z.object({
+  title: z.string().nonempty(),
+  content: z.string().nonempty(),
+});

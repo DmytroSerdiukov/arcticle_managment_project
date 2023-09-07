@@ -4,9 +4,11 @@ import Posts from "./Posts";
 
 class RSSParser extends Posts {
   parser: any;
+  isFetched: boolean;
   constructor() {
     super();
     this.parser = this.getParserInstance();
+    this.isFetched = false;
   }
 
   getParserInstance = () => {
@@ -17,12 +19,16 @@ class RSSParser extends Posts {
 
   parse = async () => {
     try {
-      const feed = await this.parser.parseURL(
-        "https://netflixtechblog.com/feed"
-      );
-      feed.items.forEach((el: any) => {
-        this.createPost(el);
-      });
+      if (!this.isFetched) {
+        const feed = await this.parser.parseURL(
+          "https://netflixtechblog.com/feed"
+        );
+
+        feed.items.forEach((el: any) => {
+          this.createFetchedPost(el);
+        });
+        this.isFetched = true;
+      }
     } catch (e) {
       console.log(e);
     }

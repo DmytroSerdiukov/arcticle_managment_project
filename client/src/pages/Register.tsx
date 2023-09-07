@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,13 +9,14 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
 import { Formik, Field, Form, ErrorMessage, FormikValues } from "formik";
 import { CheckBox, CustomField } from "../components/Form/Field";
 import { schema } from "../validation";
-import { registerUserThunk } from "../store/features/Auth";
+import { registerUserThunk, setUserData } from "../store/features/Auth";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
+import LocalStorage from "../LocalStorage";
 
 const defaultTheme = createTheme();
 
@@ -63,9 +64,20 @@ const Register: FC = (): JSX.Element => {
 export default Register;
 
 const RegisterForm: FC = (): JSX.Element => {
+  const [isAuthorized, setStatus] = useState(false);
+  const isAuth = useAppSelector((state) => state.auth.isAuthorized);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isAuth = useAppSelector((state) => state.auth.isAuthorized);
+
+  useEffect(() => {
+    const token = LocalStorage.getToken();
+    const user = LocalStorage.getItem("user");
+    if (token) {
+      setStatus(true);
+      dispatch(setUserData(user));
+      navigateToMainRoute();
+    } else setStatus(false);
+  });
 
   const onSubmitHandler = (values: FormikValues) => {
     if (!schema) return;
@@ -82,53 +94,57 @@ const RegisterForm: FC = (): JSX.Element => {
   const initValues = { login: "", password: "", rememberMe: false };
   return (
     <>
-      <Formik
-        initialValues={initValues}
-        onSubmit={(values) => {
-          dispatch(registerUserThunk(values));
-          if (isAuth) {
-            navigateToMainRoute();
-          }
-        }}
-        validate={onSubmitHandler}
-      >
-        {({ errors, touched, handleChange }) => (
-          <Form
-            style={{ display: "flex", flexDirection: "column", width: 450 }}
-          >
-            <Field
-              id="login"
-              name="login"
-              label="Login*"
-              type="text"
-              onChange={handleChange}
-              component={CustomField}
-              error={errors.login}
-              touched={touched}
-            />
-            <Field
-              id="password"
-              name="password"
-              label="Password*"
-              type="password"
-              onChange={handleChange}
-              component={CustomField}
-              error={errors.password}
-              touched={touched}
-            />
-            <Field
-              id="rememberMe"
-              name="rememberMe"
-              label="Remember Me"
-              type="checkbox"
-              component={CheckBox}
-            />
-            <Button sx={{ mt: 3 }} variant="contained" type="submit">
-              Submit
-            </Button>
-          </Form>
-        )}
-      </Formik>
+      {isAuth ? (
+        <Navigate to={ROUTES.MAIN} />
+      ) : (
+        <Formik
+          initialValues={initValues}
+          onSubmit={(values) => {
+            dispatch(registerUserThunk(values));
+            if (isAuthorized) {
+              navigateToMainRoute();
+            }
+          }}
+          validate={onSubmitHandler}
+        >
+          {({ errors, touched, handleChange }) => (
+            <Form
+              style={{ display: "flex", flexDirection: "column", width: 450 }}
+            >
+              <Field
+                id="login"
+                name="login"
+                label="Login*"
+                type="text"
+                onChange={handleChange}
+                component={CustomField}
+                error={errors.login}
+                touched={touched}
+              />
+              <Field
+                id="password"
+                name="password"
+                label="Password*"
+                type="password"
+                onChange={handleChange}
+                component={CustomField}
+                error={errors.password}
+                touched={touched}
+              />
+              <Field
+                id="rememberMe"
+                name="rememberMe"
+                label="Remember Me"
+                type="checkbox"
+                component={CheckBox}
+              />
+              <Button sx={{ mt: 3 }} variant="contained" type="submit">
+                Submit
+              </Button>
+            </Form>
+          )}
+        </Formik>
+      )}
     </>
   );
 };

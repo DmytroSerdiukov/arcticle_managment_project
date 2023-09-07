@@ -20,17 +20,15 @@ export const authReducer = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUserData: (state, action: PayloadAction) => {
+    setUserData: (state, action) => {
       state.isAuthorized = true;
-      const username = action.payload;
-      state.user = username;
-      console.log("reducer state", { ...state });
+      state.user = action.payload;
     },
     logoutUser: (state, action: PayloadAction) => {
       state.isAuthorized = false;
       state.user = "";
       LocalStorage.removeToken();
-      console.log("reducer state", { ...state });
+      LocalStorage.removeItem("user");
     },
   },
 });
@@ -44,8 +42,9 @@ export const authUserThunk = createAsyncThunk(
   async (data: any, thunkAPI) => {
     try {
       const res = await AuthAPI.authUser(data);
-      console.log(res);
       LocalStorage.setToken(res.jwt);
+      LocalStorage.setUserData(res.username);
+
       thunkAPI.dispatch(setUserData(res.username));
     } catch (err) {}
   },
@@ -58,6 +57,7 @@ export const registerUserThunk = createAsyncThunk(
       const res = await AuthAPI.registerUser(data);
       console.log(res);
       LocalStorage.setToken(res.jwt);
+      LocalStorage.setUserData(res.username);
       thunkAPI.dispatch(setUserData(res.username));
     } catch (err) {}
   },

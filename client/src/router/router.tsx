@@ -4,6 +4,7 @@ import Auth from "../pages/Auth";
 import Register from "../pages/Register";
 import { ROUTES } from "../constants/routes";
 import PostDetails from "../pages/PostDetails";
+import NewPost from "../pages/NewPost";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: ROUTES.EDIT,
     element: <PostDetails />,
+  },
+  {
+    path: ROUTES.NEWPOST,
+    element: <NewPost />,
   },
   {
     path: "*",

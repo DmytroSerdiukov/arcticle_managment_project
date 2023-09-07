@@ -1,46 +1,65 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
+import { PostsAPI } from "../../api/posts";
 
-interface CounterState {
+interface ReducerState {
   posts: any;
+  searched: any;
 }
 
-const initialState: CounterState = {
+const initialState: ReducerState = {
   posts: [],
+  searched: [],
 };
 
-export const counterSlice = createSlice({
+const postsReducer = createSlice({
   name: "posts",
   initialState,
   reducers: {
     setPosts: (state, action: PayloadAction) => {
-      state.posts = [...state.posts, action.payload];
+      state.posts = action.payload;
+      state.searched = state.posts;
     },
+    reversePosts: (state) => {
+      state.searched = state.posts.reverse(
+        (a: any, b: any) => b.pubDate - a.pubDate,
+      );
+    },
+    searchPosts: (state, action) => {
+      state.searched = state.posts.filter((post: any) =>
+        post.title.includes(action.payload),
+      );
+    },
+    // createPost: (state, action: PayloadAction) => {
+    //   state.posts = [action.payload, ...state.posts];
+    // },
     // deletePost: (state, action: PayloadAction) => {
     //   state.posts.filter((el: any) => el.id != action.payload);
     // },
   },
 });
 
-export const {} = counterSlice.actions;
+export const { setPosts, reversePosts, searchPosts } = postsReducer.actions;
 
-export default counterSlice.reducer;
+export default postsReducer.reducer;
 
-const getPosts = createAsyncThunk("posts/get", async () => {
-  try {
-    //   const response = await userAPI.updateById(id);
-    //   return response.data.user;
-  } catch (err) {
-    //   return rejectWithValue(err.response.data);
-  }
-});
+export const getPostsThunk = createAsyncThunk(
+  "posts/get",
+  async (_, thunkAPI) => {
+    try {
+      const response = await PostsAPI.getPosts();
+      console.log("response thunk", response);
+      thunkAPI.dispatch(setPosts(response));
+    } catch (err) {}
+  },
+);
 
-const createPost = createAsyncThunk(
+export const createPostThunk = createAsyncThunk(
   "posts/create",
-  async (postId, { rejectWithValue }) => {
+  async (data: any, { rejectWithValue }) => {
     try {
-      //   const response = await userAPI.updateById(id);
+      await PostsAPI.createPost(data);
       //   return response.data.user;
     } catch (err) {
       //   return rejectWithValue(err.response.data);
@@ -48,23 +67,20 @@ const createPost = createAsyncThunk(
   },
 );
 
-const updatePost = createAsyncThunk(
+export const updatePostThunk = createAsyncThunk(
   "posts/update",
-  async (postId, { rejectWithValue }) => {
+  async (data: any) => {
     try {
-      //   const response = await userAPI.updateById(id);
-      //   return response.data.user;
-    } catch (err) {
-      //   return rejectWithValue(err.response.data);
-    }
+      const response = await PostsAPI.updatePost(data);
+    } catch (err) {}
   },
 );
 
-const deletePost = createAsyncThunk(
+export const deletePostThunk = createAsyncThunk(
   "posts/delete",
-  async (postId, { rejectWithValue }) => {
+  async (postId: string, { rejectWithValue }) => {
     try {
-      //   const response = await userAPI.updateById(id);
+      await PostsAPI.deletePost(postId);
       //   return response.data.user;
     } catch (err) {
       //   return rejectWithValue(err.response.data);
