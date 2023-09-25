@@ -1,52 +1,52 @@
-import { Button, Container } from "@mui/material";
-import { Field, Form, Formik } from "formik";
-import { CustomField } from "../components/Form/Field";
-import { useNavigate } from "react-router-dom";
-import { ROUTES } from "../constants/routes";
-import { NewPostSchema, PostSchema } from "../validation";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { createPostThunk } from "../store/features/Posts";
-import WithAuth from "../hoc/WithAuthorized";
+import { Button, Container } from '@mui/material'
+import { Field, Form, Formik } from 'formik'
+import { CustomField } from '../components/Form/Field'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '../constants/routes'
+import { NewPostSchema, PostSchema } from '../validation'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { createPostThunk } from '../store/features/Posts'
+import WithAuth from '../hoc/WithAuthorized'
 
 const NewPost = (): JSX.Element => {
   return (
     <Container component="main" maxWidth={false}>
       <PostForm />
     </Container>
-  );
-};
+  )
+}
 
-const ProtectedNewPost = WithAuth(NewPost);
+const ProtectedNewPost = WithAuth(NewPost)
 
-export default ProtectedNewPost;
+export default ProtectedNewPost
 
 type InitVals = {
-  title: string;
-  content: string;
-};
+  title: string
+  content: string
+}
 
 const PostForm = (): JSX.Element => {
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.auth.user);
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.auth.user)
+  const navigate = useNavigate()
   const navigateToMainRoute = () => {
-    navigate(ROUTES.MAIN);
-  };
+    navigate(ROUTES.MAIN)
+  }
   const initValues: InitVals = {
-    title: "",
-    content: "",
-  };
+    title: '',
+    content: '',
+  }
   return (
     <>
       <Formik
         initialValues={initValues}
         validate={(values) => {
-          if (!NewPostSchema) return;
+          if (!NewPostSchema) return
           try {
-            NewPostSchema.parse(values);
+            NewPostSchema.parse(values)
           } catch (error: any) {
-            console.log(error);
-            return error.formErrors.fieldErrors;
+            console.log(error)
+            return error.formErrors.fieldErrors
           }
         }}
         onSubmit={(values) => {
@@ -55,15 +55,15 @@ const PostForm = (): JSX.Element => {
             content: values.content,
             pubDate: new Date().toUTCString(),
             creator: user,
-          };
-          console.log(values);
-          dispatch(createPostThunk(data));
-          navigateToMainRoute();
+          }
+          console.log(values)
+          dispatch(createPostThunk(data))
+          navigateToMainRoute()
         }}
       >
         {({ errors, touched, handleChange }) => (
           <Form
-            style={{ display: "flex", flexDirection: "column", width: 450 }}
+            style={{ display: 'flex', flexDirection: 'column', width: 450 }}
           >
             <Field
               id="title"
@@ -94,5 +94,5 @@ const PostForm = (): JSX.Element => {
         )}
       </Formik>
     </>
-  );
-};
+  )
+}

@@ -1,20 +1,15 @@
-import {
-  TextField,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-} from "@mui/material";
-import { FormikErrors, FormikValues } from "formik";
-import { FC } from "react";
+import { TextField, FormGroup, FormControlLabel, Checkbox } from '@mui/material'
+import { FormikErrors, FormikValues } from 'formik'
+import { FC } from 'react'
 
 type ICustomField = {
-  name: string;
-  label: string;
-  touched: boolean;
-  field: FormikValues;
-  error: FormikErrors<string>;
-  props: FormikValues;
-};
+  name: string
+  label: string
+  touched: boolean
+  field: FormikValues
+  error: FormikErrors<string>
+  props: FormikValues
+}
 
 export const CustomField: FC<ICustomField> = ({
   name,
@@ -31,11 +26,11 @@ export const CustomField: FC<ICustomField> = ({
         {...props}
         label={label}
         margin="normal"
-        helperText={touched && error ? error : ""}
+        helperText={touched && error ? error : ''}
       />
     </>
-  );
-};
+  )
+}
 
 export const CheckBox: FC<ICustomField> = ({
   label,
@@ -50,5 +45,5 @@ export const CheckBox: FC<ICustomField> = ({
         label={label}
       />
     </FormGroup>
-  );
-};
+  )
+}

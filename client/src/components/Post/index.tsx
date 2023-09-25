@@ -1,45 +1,45 @@
-import React, { FC, ReactNode } from "react";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import CardActionArea from "@mui/material/CardActionArea";
-import CardContent from "@mui/material/CardContent";
-import Avatar from "@mui/material/Avatar";
-import { useNavigate } from "react-router-dom";
-import { styles } from "./styles";
-import ClearIcon from "@mui/icons-material/Clear";
-import { useAppDispatch } from "../../store/hooks";
-import { deletePostThunk } from "../../store/features/Posts";
+import React, { FC, ReactNode } from 'react'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import CardActionArea from '@mui/material/CardActionArea'
+import CardContent from '@mui/material/CardContent'
+import Avatar from '@mui/material/Avatar'
+import { useNavigate } from 'react-router-dom'
+import { styles } from './styles'
+import ClearIcon from '@mui/icons-material/Clear'
+import { useAppDispatch } from '../../store/hooks'
+import { deletePostThunk } from '../../store/features/Posts'
 interface FeaturedPostProps {
-  date: string;
-  creator: string;
+  date: string
+  creator: string
   // description: string;
   // image: string;
   // imageLabel: string;
-  title: any;
+  title: any
 }
 
 const Post: FC = ({ _id, title, creator, pubDate }: any): JSX.Element => {
-  console.log(_id, title, creator, pubDate);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  console.log(_id, title, creator, pubDate)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const navigateToPost = () => {
-    navigate(`/posts/${_id}`);
-  };
+    navigate(`/posts/${_id}`)
+  }
 
   const deleteItem = () => {
-    console.log("DELETE POST", _id);
-    dispatch(deletePostThunk(_id));
-  };
+    console.log('DELETE POST', _id)
+    dispatch(deletePostThunk(_id))
+  }
 
   return (
     <Grid item xs={12} md={8}>
-      <Card sx={{ display: "flex" }}>
+      <Card sx={{ display: 'flex' }}>
         <CardContent
           onClick={navigateToPost}
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
+            display: 'flex',
+            justifyContent: 'space-between',
             width: 600,
           }}
         >
@@ -62,6 +62,6 @@ const Post: FC = ({ _id, title, creator, pubDate }: any): JSX.Element => {
         </div>
       </Card>
     </Grid>
-  );
-};
-export default Post;
+  )
+}
+export default Post

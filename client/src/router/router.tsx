@@ -1,10 +1,10 @@
-import { RouteObject, createBrowserRouter } from "react-router-dom";
-import Feed from "../pages/Feed";
-import Auth from "../pages/Auth";
-import Register from "../pages/Register";
-import { ROUTES } from "../constants/routes";
-import PostDetails from "../pages/PostDetails";
-import NewPost from "../pages/NewPost";
+import { RouteObject, createBrowserRouter } from 'react-router-dom'
+import Feed from '../pages/Feed'
+import Auth from '../pages/Auth'
+import Register from '../pages/Register'
+import { ROUTES } from '../constants/routes'
+import PostDetails from '../pages/PostDetails'
+import NewPost from '../pages/NewPost'
 
 const router = createBrowserRouter([
   {
@@ -28,9 +28,9 @@ const router = createBrowserRouter([
     element: <NewPost />,
   },
   {
-    path: "*",
+    path: '*',
     element: <div>No such page</div>,
   },
-]);
+])
 
-export default router;
+export default router

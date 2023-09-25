@@ -1,24 +1,24 @@
 const LocalStorage = {
   getToken: () => {
-    const token = localStorage.getItem("token") as string;
-    return token;
+    const token = localStorage.getItem('token') as string
+    return token
   },
   getItem: (key: string) => {
-    const item = localStorage.getItem(key) as string;
-    return item;
+    const item = localStorage.getItem(key) as string
+    return item
   },
   setToken: (token: any) => {
-    localStorage.setItem("token", token);
+    localStorage.setItem('token', token)
   },
   setUserData: (user: any) => {
-    localStorage.setItem("user", user);
+    localStorage.setItem('user', user)
   },
   removeToken: () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem('token')
   },
   removeItem: (key: any) => {
-    localStorage.removeItem(key);
+    localStorage.removeItem(key)
   },
-};
+}
 
-export default LocalStorage;
+export default LocalStorage

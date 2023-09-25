@@ -1,15 +1,15 @@
-import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Button } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 export const AddPostButton = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const navigateTo = () => {
-    navigate("posts/create");
-  };
+    navigate('posts/create')
+  }
   return (
     <div
       style={{
-        position: "fixed",
+        position: 'fixed',
         bottom: 100,
         right: 125,
       }}
@@ -22,5 +22,5 @@ export const AddPostButton = () => {
         +
       </Button>
     </div>
-  );
-};
+  )
+}

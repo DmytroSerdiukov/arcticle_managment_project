@@ -1,22 +1,22 @@
-import React, { FC, ReactNode, useEffect, useState } from "react";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Navigate, useNavigate } from "react-router-dom";
-import { ROUTES } from "../constants/routes";
-import { CheckBox, CustomField } from "../components/Form/Field";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import { schema } from "../validation";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { authUserThunk, setUserData } from "../store/features/Auth";
-import LocalStorage from "../LocalStorage";
+import React, { FC, ReactNode, useEffect, useState } from 'react'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { Navigate, useNavigate } from 'react-router-dom'
+import { ROUTES } from '../constants/routes'
+import { CheckBox, CustomField } from '../components/Form/Field'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { schema } from '../validation'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { authUserThunk, setUserData } from '../store/features/Auth'
+import LocalStorage from '../LocalStorage'
 
-const defaultTheme = createTheme();
+const defaultTheme = createTheme()
 
 const Auth: FC = (): JSX.Element => {
   return (
@@ -26,9 +26,9 @@ const Auth: FC = (): JSX.Element => {
         <Box
           sx={{
             marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
           <Typography component="h1" variant="h5">
@@ -37,7 +37,7 @@ const Auth: FC = (): JSX.Element => {
           <Box sx={{ mt: 1 }}>
             <AuthForm />
 
-            <Grid container sx={{ mt: 3, justifyContent: "center" }}>
+            <Grid container sx={{ mt: 3, justifyContent: 'center' }}>
               <Grid item>
                 <Link href={ROUTES.REGISTER} variant="body2">
                   {"Don't have an account? Sign Up"}
@@ -48,34 +48,34 @@ const Auth: FC = (): JSX.Element => {
         </Box>
       </Container>
     </ThemeProvider>
-  );
-};
+  )
+}
 
 type InitVals = {
-  login: string;
-  password: string;
-  rememberMe: boolean;
-};
+  login: string
+  password: string
+  rememberMe: boolean
+}
 
 const AuthForm: FC = (): JSX.Element => {
-  const [isAuthorized, setStatus] = useState(false);
-  const isAuth = useAppSelector((state) => state.auth.isAuthorized);
-  const dispatch = useAppDispatch();
+  const [isAuthorized, setStatus] = useState(false)
+  const isAuth = useAppSelector((state) => state.auth.isAuthorized)
+  const dispatch = useAppDispatch()
   useEffect(() => {
-    const token = LocalStorage.getToken();
-    const user = LocalStorage.getItem("user");
+    const token = LocalStorage.getToken()
+    const user = LocalStorage.getItem('user')
     if (token) {
-      setStatus(true);
-      dispatch(setUserData(user));
-      navigateToMainRoute();
-    } else setStatus(false);
-  }, []);
+      setStatus(true)
+      dispatch(setUserData(user))
+      navigateToMainRoute()
+    } else setStatus(false)
+  }, [])
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const navigateToMainRoute = () => {
-    navigate(ROUTES.MAIN);
-  };
-  const initValues: InitVals = { login: "", password: "", rememberMe: false };
+    navigate(ROUTES.MAIN)
+  }
+  const initValues: InitVals = { login: '', password: '', rememberMe: false }
   return (
     <>
       {isAuth ? (
@@ -84,19 +84,19 @@ const AuthForm: FC = (): JSX.Element => {
         <Formik
           initialValues={initValues}
           validate={(values) => {
-            if (!schema) return;
+            if (!schema) return
             try {
-              schema.parse(values);
+              schema.parse(values)
             } catch (error: any) {
-              console.log(error);
-              return error.formErrors.fieldErrors;
+              console.log(error)
+              return error.formErrors.fieldErrors
             }
           }}
           onSubmit={(values) => {
-            dispatch(authUserThunk(values));
+            dispatch(authUserThunk(values))
             if (isAuthorized) {
-              console.log("authed");
-              navigateToMainRoute();
+              console.log('authed')
+              navigateToMainRoute()
             }
 
             // console.log(values);
@@ -104,7 +104,7 @@ const AuthForm: FC = (): JSX.Element => {
         >
           {({ errors, touched, handleChange }) => (
             <Form
-              style={{ display: "flex", flexDirection: "column", width: 450 }}
+              style={{ display: 'flex', flexDirection: 'column', width: 450 }}
             >
               <Field
                 id="login"
@@ -141,6 +141,6 @@ const AuthForm: FC = (): JSX.Element => {
         </Formik>
       )}
     </>
-  );
-};
-export default Auth;
+  )
+}
+export default Auth
