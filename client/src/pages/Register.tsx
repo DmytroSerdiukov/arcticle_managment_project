@@ -17,6 +17,7 @@ import { schema } from '../validation'
 import { registerUserThunk, setUserData } from '../store/features/Auth'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import LocalStorage from '../LocalStorage'
+import { toFormikValidationSchema } from 'zod-formik-adapter'
 
 const defaultTheme = createTheme()
 
@@ -105,7 +106,7 @@ const RegisterForm: FC = (): JSX.Element => {
               navigateToMainRoute()
             }
           }}
-          validate={onSubmitHandler}
+          validationSchema={toFormikValidationSchema(schema)}
         >
           {({ errors, touched, handleChange }) => (
             <Form
@@ -118,7 +119,7 @@ const RegisterForm: FC = (): JSX.Element => {
                 type="text"
                 onChange={handleChange}
                 component={CustomField}
-                error={errors.login}
+                error={touched.login && errors.login}
                 touched={touched}
               />
               <Field
@@ -128,7 +129,7 @@ const RegisterForm: FC = (): JSX.Element => {
                 type="password"
                 onChange={handleChange}
                 component={CustomField}
-                error={errors.password}
+                error={touched.password && errors.password}
                 touched={touched}
               />
               <Field
