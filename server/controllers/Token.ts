@@ -1,20 +1,20 @@
-import crypto from "crypto";
-import jwt from "jsonwebtoken";
+import crypto from 'crypto'
+import jwt from 'jsonwebtoken'
 
 class Token {
-  token: any;
+  token: any
   constructor() {
-    this.token = "";
+    this.token = ''
   }
 
   createToken = (username: any) => {
-    const token = crypto.randomBytes(64).toString();
-    this.token = jwt.sign(username, token);
-  };
+    const token = crypto.randomBytes(64).toString()
+    this.token = jwt.sign(username, token)
+  }
 
   getToken = () => {
-    return this.token;
-  };
+    return this.token
+  }
 }
 
-export default Token;
+export default Token
