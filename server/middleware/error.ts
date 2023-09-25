@@ -6,10 +6,10 @@ export const globalExceptionLayer = async (
   res: Response,
   next: any
 ) => {
-  // error.statusCode = error.statusCode || 500;
-  // error.status = error.status || "error";
+  error.statusCode = error.statusCode || 500
+  error.status = error.status || 'error'
   res.status(error.statusCode).json({
-    status: error.statusCode || 500,
-    message: error.message || '',
+    status: error.statusCode,
+    message: error.status,
   })
 }

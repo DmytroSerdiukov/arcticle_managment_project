@@ -15,7 +15,6 @@ router.get(Posts.post, async (req: Request, res: Response) => {
 })
 
 router.post(Posts.posts, async (req: Request, res: Response) => {
-  console.log(req.body)
   await postsManager.createPost(req.body.post)
 })
 
@@ -23,7 +22,6 @@ router.put(Posts.post, async (req: Request, res: Response) => {
   await postsManager.updatePost(req.params.id, req.body.post)
 })
 router.delete(Posts.post, async (req, res) => {
-  console.log(req.params)
   await postsManager.deletePost(req.params.id)
 })
 
