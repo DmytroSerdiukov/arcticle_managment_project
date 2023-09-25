@@ -15,6 +15,7 @@ import { schema } from '../validation'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { authUserThunk, setUserData } from '../store/features/Auth'
 import LocalStorage from '../LocalStorage'
+import { toFormikValidationSchema } from 'zod-formik-adapter'
 
 const defaultTheme = createTheme()
 
@@ -61,6 +62,7 @@ const AuthForm: FC = (): JSX.Element => {
   const [isAuthorized, setStatus] = useState(false)
   const isAuth = useAppSelector((state) => state.auth.isAuthorized)
   const dispatch = useAppDispatch()
+
   useEffect(() => {
     const token = LocalStorage.getToken()
     const user = LocalStorage.getItem('user')
@@ -83,61 +85,52 @@ const AuthForm: FC = (): JSX.Element => {
       ) : (
         <Formik
           initialValues={initValues}
-          validate={(values) => {
-            if (!schema) return
-            try {
-              schema.parse(values)
-            } catch (error: any) {
-              console.log(error)
-              return error.formErrors.fieldErrors
-            }
-          }}
+          validationSchema={toFormikValidationSchema(schema)}
           onSubmit={(values) => {
             dispatch(authUserThunk(values))
             if (isAuthorized) {
-              console.log('authed')
               navigateToMainRoute()
             }
-
-            // console.log(values);
           }}
         >
-          {({ errors, touched, handleChange }) => (
-            <Form
-              style={{ display: 'flex', flexDirection: 'column', width: 450 }}
-            >
-              <Field
-                id="login"
-                name="login"
-                label="Login*"
-                type="text"
-                onChange={handleChange}
-                component={CustomField}
-                error={errors.login}
-                touched={touched}
-              />
-              <Field
-                id="password"
-                name="password"
-                label="Password*"
-                type="password"
-                onChange={handleChange}
-                component={CustomField}
-                error={errors.password}
-                touched={touched}
-              />
-              <Field
-                id="rememberMe"
-                name="rememberMe"
-                label="Remember Me"
-                type="checkbox"
-                component={CheckBox}
-              />
-              <Button sx={{ mt: 3 }} variant="contained" type="submit">
-                Submit
-              </Button>
-            </Form>
-          )}
+          {({ errors, touched, handleChange }) => {
+            return (
+              <Form
+                style={{ display: 'flex', flexDirection: 'column', width: 450 }}
+              >
+                <Field
+                  id="login"
+                  name="login"
+                  label="Login*"
+                  type="text"
+                  onChange={handleChange}
+                  component={CustomField}
+                  error={touched.login && errors.login}
+                  touched={touched}
+                />
+                <Field
+                  id="password"
+                  name="password"
+                  label="Password*"
+                  type="password"
+                  onChange={handleChange}
+                  component={CustomField}
+                  error={touched.password && errors.password}
+                  touched={touched}
+                />
+                <Field
+                  id="rememberMe"
+                  name="rememberMe"
+                  label="Remember Me"
+                  type="checkbox"
+                  component={CheckBox}
+                />
+                <Button sx={{ mt: 3 }} variant="contained" type="submit">
+                  Submit
+                </Button>
+              </Form>
+            )
+          }}
         </Formik>
       )}
     </>
