@@ -6,10 +6,12 @@ import { RouterProvider } from 'react-router-dom'
 import router from './router/router'
 import { Provider } from 'react-redux'
 import { store } from './store/store'
+import CustomSnackBar from './components/SnackBar/SnackBar'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <Provider store={store}>
+    <CustomSnackBar />
     <RouterProvider router={router} />
   </Provider>
 )

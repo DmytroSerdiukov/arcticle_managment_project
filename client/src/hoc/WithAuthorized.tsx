@@ -11,7 +11,6 @@ const WithAuth = (Component: any) => {
     useEffect(() => {
       const token = LocalStorage.getToken()
       const user = LocalStorage.getItem('user')
-      console.log(user)
       if (user) {
         setAuth(true)
       } else setAuth(false)

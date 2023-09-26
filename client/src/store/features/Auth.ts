@@ -4,6 +4,9 @@ import type { RootState } from '../store'
 import { AuthAPI } from '../../api/auth'
 import LocalStorage from '../../LocalStorage'
 import SessionStorage from '../../SessionStorage/SessionStorage'
+import { openSnackBar } from './SnackBar'
+import { AxiosError } from 'axios'
+import { Status } from '../statuses'
 
 interface AuthState {
   isAuthorized: boolean
@@ -54,7 +57,10 @@ export const authUserThunk = createAsyncThunk(
       }
 
       thunkAPI.dispatch(setUserData(res.username))
-    } catch (err) {}
+    } catch (e: any) {
+      const data = { status: Status.error, message: e.response.data.msg }
+      thunkAPI.dispatch(openSnackBar(data))
+    }
   }
 )
 
@@ -67,6 +73,9 @@ export const registerUserThunk = createAsyncThunk(
       LocalStorage.setToken(res.jwt)
       LocalStorage.setUserData(res.username)
       thunkAPI.dispatch(setUserData(res.username))
-    } catch (err) {}
+    } catch (e: any) {
+      const data = { status: Status.error, message: e.response.data.msg }
+      thunkAPI.dispatch(openSnackBar(data))
+    }
   }
 )

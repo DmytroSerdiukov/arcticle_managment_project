@@ -36,7 +36,7 @@ const Feed: FC = (): JSX.Element => {
   }
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth={false}>
       <AddPostButton />
       <Header title="RSS Feed" />
       <Button onClick={sortByDate}>Sort by date</Button>

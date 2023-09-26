@@ -7,6 +7,8 @@ import { NewPostSchema, PostSchema } from '../validation'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { createPostThunk } from '../store/features/Posts'
 import WithAuth from '../hoc/WithAuthorized'
+import { openSnackBar } from '../store/features/SnackBar'
+import { Status } from '../store/statuses'
 
 const NewPost = (): JSX.Element => {
   return (
@@ -30,6 +32,8 @@ const PostForm = (): JSX.Element => {
   const user = useAppSelector((state) => state.auth.user)
   const navigate = useNavigate()
   const navigateToMainRoute = () => {
+    const data = { status: Status.success, message: 'Post created' }
+    dispatch(openSnackBar(data))
     navigate(ROUTES.MAIN)
   }
   const initValues: InitVals = {

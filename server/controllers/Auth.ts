@@ -30,7 +30,7 @@ export class Auth extends Mongo {
       userData.parse(req.body!.data)
       const { login, password } = req.body!.data
       const user = await UsersModel.findOne({ login: login })
-      if (user) return res.status(400).json({ msg: 'Something went wrong' })
+      if (user) return res.status(400).json({ msg: 'User already exists' })
       const newUser = new UsersModel({
         login: login,
         password: password,

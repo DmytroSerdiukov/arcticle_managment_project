@@ -1,5 +1,8 @@
 import { Button } from '@mui/material'
+import Box from '@mui/material/Box'
 import { useNavigate } from 'react-router-dom'
+import Fab from '@mui/material/Fab'
+import AddIcon from '@mui/icons-material/Add'
 
 export const AddPostButton = () => {
   const navigate = useNavigate()
@@ -7,20 +10,18 @@ export const AddPostButton = () => {
     navigate('posts/create')
   }
   return (
-    <div
-      style={{
+    <Box
+      sx={{
+        '& > :not(style)': { m: 1 },
         position: 'fixed',
         bottom: 100,
-        right: 125,
+        right: 350,
       }}
+      onClick={navigateTo}
     >
-      <Button
-        onClick={navigateTo}
-        variant="contained"
-        sx={{ borderRadius: 1, fontSize: 18 }}
-      >
-        +
-      </Button>
-    </div>
+      <Fab color="primary" aria-label="add">
+        <AddIcon />
+      </Fab>
+    </Box>
   )
 }

@@ -10,17 +10,14 @@ import { styles } from './styles'
 import ClearIcon from '@mui/icons-material/Clear'
 import { useAppDispatch } from '../../store/hooks'
 import { deletePostThunk } from '../../store/features/Posts'
-interface FeaturedPostProps {
-  date: string
-  creator: string
-  // description: string;
-  // image: string;
-  // imageLabel: string;
-  title: any
-}
+import { FeaturedPostProps } from './types'
 
-const Post: FC = ({ _id, title, creator, pubDate }: any): JSX.Element => {
-  console.log(_id, title, creator, pubDate)
+const Post: FC<FeaturedPostProps> = ({
+  _id,
+  title,
+  creator,
+  pubDate,
+}): JSX.Element => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const navigateToPost = () => {

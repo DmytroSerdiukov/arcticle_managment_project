@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './features/Auth'
 import postsReducer from './features/Posts'
-// ...
+import snackBarReducer from './features/SnackBar'
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     posts: postsReducer,
+    snackbar: snackBarReducer,
   },
 })
 
