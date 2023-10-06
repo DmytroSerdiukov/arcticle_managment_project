@@ -16,16 +16,16 @@ const Feed: FC = (): JSX.Element => {
     dispatch(getPostsThunk())
   }, [])
   const dispatch = useAppDispatch()
+  const isAuth = useAppSelector((state) => state.auth.isAuthorized)
+  const isFetching = useAppSelector((state) => state.posts.isFetching)
   let [page, setPage] = useState(1)
   const posts = useAppSelector((state) => state.posts.posts)
   const searched = useAppSelector((state) => state.posts.searched)
+
   const PER_PAGE = 5
-  const count = posts !== null ? Math.ceil(posts.length / PER_PAGE) : 1
   const _DATA = usePagination(searched, PER_PAGE)
-  const getPosts = async () => {
-    const res = await PostsAPI.getPosts()
-    dispatch(setPosts(res))
-  }
+  const count = posts !== null ? Math.ceil(searched.length / PER_PAGE) : 1
+
   const handleChange = (e: any, p: any) => {
     setPage(p)
     _DATA.jump(p)
@@ -37,7 +37,6 @@ const Feed: FC = (): JSX.Element => {
 
   return (
     <Container maxWidth={false}>
-      <AddPostButton />
       <Header title="RSS Feed" />
       <Button onClick={sortByDate}>Sort by date</Button>
       <main>
@@ -50,16 +49,30 @@ const Feed: FC = (): JSX.Element => {
           }}
           spacing={4}
         >
-          {searched.length === 0 ? (
-            <CircularProgress />
+          {isFetching ? (
+            <div
+              style={{ height: '50vh', display: 'flex', alignItems: 'center' }}
+            >
+              <CircularProgress />
+            </div>
+          ) : searched.length === 0 ? (
+            'No posts'
           ) : (
             _DATA.currentData().map((post: any, i: number) => {
               return <FeaturedPost key={i} {...post} />
             })
           )}
-          <Pagination count={count} page={page} onChange={handleChange} />
+          {isFetching ? null : searched.length > 0 ? (
+            <Pagination
+              style={{ position: 'fixed', bottom: 130 }}
+              count={count}
+              page={page}
+              onChange={handleChange}
+            />
+          ) : null}
         </Grid>
       </main>
+      {isAuth ? <AddPostButton /> : null}
     </Container>
   )
 }

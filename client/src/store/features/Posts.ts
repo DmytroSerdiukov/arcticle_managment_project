@@ -6,17 +6,22 @@ import { PostsAPI } from '../../api/posts'
 interface ReducerState {
   posts: any
   searched: any
+  isFetching: boolean
 }
 
 const initialState: ReducerState = {
   posts: [],
   searched: [],
+  isFetching: false,
 }
 
 const postsReducer = createSlice({
   name: 'posts',
   initialState,
   reducers: {
+    setFetching: (state, action) => {
+      state.isFetching = action.payload
+    },
     setPosts: (state, action: PayloadAction) => {
       state.posts = action.payload
       state.searched = state.posts
@@ -40,7 +45,8 @@ const postsReducer = createSlice({
   },
 })
 
-export const { setPosts, reversePosts, searchPosts } = postsReducer.actions
+export const { setFetching, setPosts, reversePosts, searchPosts } =
+  postsReducer.actions
 
 export default postsReducer.reducer
 
@@ -48,9 +54,10 @@ export const getPostsThunk = createAsyncThunk(
   'posts/get',
   async (_, thunkAPI) => {
     try {
+      thunkAPI.dispatch(setFetching(true))
       const response = await PostsAPI.getPosts()
-      console.log('response thunk', response)
       thunkAPI.dispatch(setPosts(response))
+      thunkAPI.dispatch(setFetching(false))
     } catch (err) {}
   }
 )
