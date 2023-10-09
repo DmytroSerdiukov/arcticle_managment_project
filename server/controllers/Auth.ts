@@ -19,7 +19,7 @@ export class Auth extends Mongo {
         const token = new Token()
         token.createToken(user.login)
         const jwt = token.getToken()
-        res.status(201).json({ response: { username, jwt } })
+        return res.status(201).json({ response: { username, jwt } })
       }
       res.status(400).json({ msg: 'Login or email is invalid' })
     }
@@ -40,7 +40,7 @@ export class Auth extends Mongo {
       token.createToken(login)
       const jwt = token.getToken()
       const username = login
-      res.status(201).json({ response: { username, jwt } })
+      return res.status(201).json({ response: { username, jwt } })
     }
   )
 }
